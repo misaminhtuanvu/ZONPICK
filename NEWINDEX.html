@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zonpick UI – Final Balanced Layout (Fixed JS)</title>
+    <style>
+        /* ===== Global layout ===== */
+        body {
+            height: 100vh;               /* full viewport – keeps fixed gaps */
+            margin: 0;
+            padding: 64px;              /* 64‑px gap on every side */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            background: #FFFFFF;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #212529;
+        }
+        /* ===== Title ===== */
+        .zonpick-title {
+            font-size: 2.4em;
+            font-weight: 700;
+            color: #1D2129;
+            margin: 0 0 24px 0;         /* breathing room below title */
+        }
+        /* ===== Main container ===== */
+        .main-container {
+            flex: 1;                    /* fill remaining height, keeps 64‑px bottom gap */
+            width: 100%;
+            background: #FFFFFF !important;
+            border: 1px solid #C2C8CE;
+            border-radius: 14px;
+            padding: 32px;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+        }
+        /* ===== Three‑dot menu ===== */
+        .menu-button-wrapper {
+            position: absolute;
+            top: 32px;
+            left: 32px;
+            z-index: 10;
+        }
+        .menu-button {
+            background: #FFFFFF !important;
+            border: 1px solid #D0D7DE;
+            border-radius: 10px;
+            color: #24292F; /* Thêm màu cho dấu ba chấm nếu cần */
+            font-size: 28px;
+            padding: 12px 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+        .menu-button:hover { background:#F6F8FA !important; border-color:#B0B8C1; }
+        .menu-button:focus  { outline:2px solid transparent; box-shadow:0 0 0 3px rgba(59,130,246,.4); }
+        /* ===== Dropdown ===== */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            background: #FFFFFF !important;
+            border: 1px solid #C0C6CD;
+            border-radius: 12px;
+            box-shadow: 0 8px 18px rgba(27,31,36,.1);
+            width: 240px;
+            padding: 8px 0;
+            overflow: hidden;
+            z-index: 1000;
+        }
+        .dropdown-menu.active { display: block; }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            font-size: 1em;
+            color: #1F2937;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .menu-item:hover { background:#F3F4F6; color:#111827; }
+        .menu-item svg { width:22px; height:22px; margin-right:14px; fill:#5A6470; }
+        .menu-item:hover svg { fill:#2C333B; }
+    </style>
+</head>
+<body>
+    <div class="zonpick-title">ZONPICK</div>
+
+    <div class="main-container">
+        <div class="menu-button-wrapper">
+            <button class="menu-button" id="menuButton" aria-haspopup="true" aria-expanded="false" aria-controls="dropdownMenu">&#x2026;</button>
+            <div class="dropdown-menu" id="dropdownMenu" role="menu">
+                <a href="#" class="menu-item" role="menuitem">
+                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M3.5 3A1.5 1.5 0 002 4.5v11A1.5 1.5 0 003.5 17h13a1.5 1.5 0 001.5-1.5V8.387a1.5 1.5 0 00-.44-1.06L14.172 4.44A1.5 1.5 0 0013.113 4H8.5V3A.5.5 0 008 2.5H3.5V4.5h2z"/></svg>
+                    Library
+                </a>
+                <a href="#" class="menu-item" role="menuitem">
+                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75V4.5h8V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4.5A1.25 1.25 0 0111.25 3h.007A1.25 1.25 0 0112.5 4.257V4.5h-5V4.257A1.25 1.25 0 018.743 3H8.75A1.25 1.25 0 0110 4.5zM4.53 5.083A.75.75 0 004 5.75v9.5c0 .414.336.75.75.75h10.5a.75.75 0 00.75-.75v-9.5a.75.75 0 00-.53-.722L15 5H5l-.47-.083z" clip-rule="evenodd"/></svg>
+                    Trash
+                </a>
+                <a href="#" class="menu-item" role="menuitem">
+                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+                    FAQ
+                </a>
+                <a href="#" class="menu-item" role="menuitem">
+                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10.344 4.573a.75.75 0 00-1.26.265l-.314 1.179a.755.755 0 01-.782.583 6.061 6.061 0 00-.951-.111c-.117-.006-.235-.006-.353 0a6.06 6.06 0 00-.951.11.755.755 0 01-.782-.583L4.63 4.838a.75.75 0 00-1.26-.265L2.142 7.048a.75.75 0 00.177 1.023l.98.653a6.038 6.038 0 000 2.518l-.98.653a.75.75 0 00-.177 1.023l1.228 2.475a.75.75 0 001.26.265l.314-1.179c.06-.225.27-.394.508-.434.31-.032.624-.032.938 0 .237.04.447.209.507.434l.315 1.179a.75.75 0 001.26.265l1.228-2.475a.75.75 0 00-.177-1.023l-.98-.653a6.038 6.038 0 000-2.518l.98-.653a.75.75 0 00.177 1.023L10.343 4.573zM7.5 10a2.5 2.5 0 115 0 2.5 2.5 0 01-5 0z"/></svg>
+                    Setting
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const menuButton   = document.getElementById('menuButton');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        if (menuButton && dropdownMenu) {
+            const wrapper = menuButton.parentElement; // Đây là .menu-button-wrapper
+
+            menuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
+                menuButton.setAttribute('aria-expanded', (!isOpen).toString());
+                dropdownMenu.classList.toggle('active'); // SỬA LỖI Ở ĐÂY
+            });
+
+            // Thêm lại phần xử lý đóng menu khi click ra ngoài hoặc nhấn Escape nếu bạn muốn
+            if (wrapper) { // Kiểm tra wrapper tồn tại
+                document.addEventListener('click', (event) => {
+                    if (!wrapper.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                        if (dropdownMenu.classList.contains('active')) {
+                            dropdownMenu.classList.remove('active');
+                            menuButton.setAttribute('aria-expanded', 'false');
+                        }
+                    }
+                });
+
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && dropdownMenu.classList.contains('active')) {
+                        dropdownMenu.classList.remove('active');
+                        menuButton.setAttribute('aria-expanded', 'false');
+                        menuButton.focus();
+                    }
+                });
+            }
+
+        } else {
+            if (!menuButton) console.error('Không tìm thấy nút menu với id="menuButton"');
+            if (!dropdownMenu) console.error('Không tìm thấy menu thả xuống với id="dropdownMenu"');
+        }
+    </script>
+</body>
+</html>
